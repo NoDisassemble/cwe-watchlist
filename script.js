@@ -10,7 +10,7 @@ function setTheme(theme) {
   themeButton.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} theme`);
   themeButton.querySelector('.theme-label').textContent = isDark ? 'Light' : 'Dark';
 }
-setTheme(localStorage.getItem('theme') || 'light');
+setTheme(localStorage.getItem('theme') || 'dark');
 themeButton.addEventListener('click', () => { const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; setTheme(next); localStorage.setItem('theme', next); });
 
 async function get(path) {
