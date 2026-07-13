@@ -15,7 +15,11 @@ themeButton.addEventListener('click', () => { const next = document.documentElem
 
 async function get(path) {
   const response = await fetch(`${API_BASE}${path}`);
-  if (!response.ok) throw new Error(`API returned ${response.status}`);
+  if (!response.ok) {
+    const error = new Error(`API returned ${response.status}`);
+    error.status = response.status;
+    throw error;
+  }
   return response.json();
 }
 
@@ -77,9 +81,24 @@ function showRecord(item) {
   result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 document.querySelector('#lookup-form').addEventListener('submit', async (event) => {
-  event.preventDefault(); const id = document.querySelector('#cwe-id').value.replace(/^CWE-/i, '').trim(); const result = document.querySelector('#record-result');
-  result.hidden = false; result.innerHTML = '<p class="loading">Fetching CWE record…</p>';
-  try { const data = await get(`/cwe/weakness/${encodeURIComponent(id)}`); const item = data.Weaknesses?.[0]; if (!item) throw new Error('No matching CWE weakness found.'); showRecord(item); } catch (error) { result.innerHTML = `<p class="error">Lookup failed: ${error.message}</p>`; }
+  event.preventDefault();
+  const id = document.querySelector('#cwe-id').value.replace(/^CWE-/i, '').trim();
+  const result = document.querySelector('#record-result');
+  const notFoundMessage = `<p class="error">No CWE record was found for CWE-${escapeHtml(id)}. Check the identifier and try again.</p>`;
+  result.hidden = false;
+  result.innerHTML = '<p class="loading">Fetching CWE record…</p>';
+  try {
+    const data = await get(`/cwe/weakness/${encodeURIComponent(id)}`);
+    const item = data.Weaknesses?.[0];
+    if (!item) {
+      result.innerHTML = notFoundMessage;
+      return;
+    }
+    showRecord(item);
+  } catch (error) {
+    if (error.status !== 404) console.error('CWE lookup failed:', error);
+    result.innerHTML = error.status === 404 ? notFoundMessage : '<p class="error">Unable to look up this CWE right now. Please try again later.</p>';
+  }
 });
 document.querySelectorAll('.example-id').forEach((button) => button.addEventListener('click', () => { document.querySelector('#cwe-id').value = button.dataset.id; document.querySelector('#lookup-form').requestSubmit(); }));
 document.querySelector('#refresh-data').addEventListener('click', loadDashboard);
