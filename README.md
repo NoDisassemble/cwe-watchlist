@@ -9,6 +9,7 @@ The dashboard builds a top-five watchlist using vulnerabilities known to be expl
 - Displays the current CWE catalog version and catalog totals
 - Ranks five high-priority weaknesses using CISA KEV, ransomware, recency, and EPSS signals
 - Shows threat scores and full descriptions for watchlist entries
+- Identifies mappings to ranked OWASP Top 10:2025 risk categories
 - Looks up individual weaknesses by CWE number
 - Exports the current top-five watchlist as a PDF report
 - Supports light and dark themes
@@ -19,6 +20,7 @@ The dashboard builds a top-five watchlist using vulnerabilities known to be expl
 - [MITRE CWE REST API](https://github.com/CWE-CAPEC/REST-API-wg) for CWE catalog metadata and weakness records
 - [CISA Known Exploited Vulnerabilities Catalog](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) for evidence of exploitation in the wild
 - [FIRST EPSS](https://www.first.org/epss/) for exploit-probability percentiles
+- [OWASP Top 10:2025](https://owasp.org/Top10/) and [MITRE CWE View 1450](https://cwe.mitre.org/data/definitions/1450.html) for CWE-to-OWASP category mappings
 
 An internet connection is required when the server retrieves fresh data. CWE Watch is an informational dashboard; its threat score is a project-specific ranking and should not be treated as an official risk rating.
 
@@ -67,8 +69,11 @@ cwe-watchlist/
 |-- styles.css    # Layout, responsive styles, and themes
 |-- script.js     # Dashboard rendering, lookup, and PDF export
 |-- server.py     # Static server, API proxy, ranking, and cache
+|-- owasp_2025.json # Versioned OWASP category mappings
 `-- README.md
 ```
+
+OWASP badges indicate that a CWE maps to a ranked OWASP risk category. The displayed rank belongs to the broader OWASP category, not to the individual CWE.
 
 ## Troubleshooting
 

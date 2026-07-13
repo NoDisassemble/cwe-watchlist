@@ -20,7 +20,34 @@ KEV_URLS = (
 )
 EPSS_API = "https://api.first.org/data/v1/epss"
 CACHE_FILE = Path(__file__).with_name(".watchlist-cache.json")
+OWASP_MAP_FILE = Path(__file__).with_name("owasp_2025.json")
 CACHE_MAX_AGE = timedelta(hours=24)
+
+
+def load_owasp_mappings():
+    """Build a CWE-to-category lookup from the versioned OWASP mapping file."""
+    try:
+        source = json.loads(OWASP_MAP_FILE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+    mappings = defaultdict(list)
+    for category in source.get("categories", []):
+        details = {key: category[key] for key in ("code", "rank", "name", "url")}
+        for cwe_id in category.get("cwes", []):
+            mappings[str(cwe_id)].append(details)
+    return dict(mappings)
+
+
+OWASP_MAPPINGS = load_owasp_mappings()
+
+
+def add_owasp_mappings(data):
+    """Annotate watchlist items without changing their threat ranking."""
+    for item in data.get("items", []):
+        item["owasp"] = OWASP_MAPPINGS.get(str(item.get("id")), [])
+    data["owasp_edition"] = "2025"
+    return data
 
 
 class DashboardHandler(SimpleHTTPRequestHandler):
@@ -97,7 +124,7 @@ def get_threat_watchlist():
         cached = json.loads(CACHE_FILE.read_text(encoding="utf-8"))
         created = datetime.fromisoformat(cached["created_at"])
         if datetime.now(timezone.utc) - created < CACHE_MAX_AGE:
-            return cached["data"]
+            return add_owasp_mappings(cached["data"])
 
     catalog = None
     for url in KEV_URLS:
@@ -142,6 +169,7 @@ def get_threat_watchlist():
         })
 
     data = {"items": items, "catalog_date": catalog.get("dateReleased"), "method": "CISA KEV + EPSS"}
+    add_owasp_mappings(data)
     CACHE_FILE.write_text(json.dumps({"created_at": datetime.now(timezone.utc).isoformat(), "data": data}), encoding="utf-8")
     return data
 

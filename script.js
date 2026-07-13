@@ -31,8 +31,10 @@ function renderWeaknesses(weaknesses) {
     const description = cleanText(item.Description || 'No description available.');
     const summary = description.slice(0, 145);
     const detailId = `cwe-${item.ID}-description`;
+    const owaspMappings = (item.owasp || []).map((category) => `<a class="owasp-badge" href="${escapeHtml(category.url)}" target="_blank" rel="noreferrer" title="CWE-${item.ID} maps to this OWASP category">OWASP ${escapeHtml(category.code)} &middot; #${category.rank} ${escapeHtml(category.name)} &nearr;</a>`).join('');
     return `
     <article class="weakness-card"><header><span>CWE-${item.ID}</span><span class="status">Threat score: ${item.threat_score}</span></header>
+    <div class="owasp-mappings">${owaspMappings || '<span class="owasp-badge owasp-badge-none">Not mapped to OWASP Top 10:2025</span>'}</div>
     <h3>${escapeHtml(item.Name || 'Unnamed weakness')}</h3><p>${escapeHtml(summary)}${description.length > 145 ? '…' : ''}</p>
     ${description.length > 145 ? `<button class="desc-toggle" type="button" aria-expanded="false" aria-controls="${detailId}">Full description <span aria-hidden="true">↓</span></button><p class="full-description" id="${detailId}" hidden>${escapeHtml(description)}</p>` : ''}
     <footer>${item.kev_count} KEVs · ${item.ransomware_count} ransomware · EPSS ${item.epss_percentile}%</footer></article>`;
@@ -123,6 +125,10 @@ document.querySelector('#download-report').addEventListener('click', () => {
     writeLines([`${index + 1}. CWE-${item.ID}: ${item.Name || 'Unnamed weakness'}`], 14, [23, 32, 28], 19);
     documentPdf.setFont('helvetica', 'normal');
     writeLines([`Threat score: ${item.threat_score}  |  KEVs: ${item.kev_count}  |  Ransomware-linked: ${item.ransomware_count}  |  EPSS percentile: ${item.epss_percentile}%`], 9, [92, 103, 96], 13);
+    const owaspSummary = (item.owasp || []).length
+      ? item.owasp.map((category) => `${category.code} (#${category.rank}) ${category.name}`).join('; ')
+      : 'Not mapped';
+    writeLines([`OWASP Top 10:2025: ${owaspSummary}`], 9, [92, 103, 96], 13);
     y += 6;
     documentPdf.setFont('helvetica', 'bold');
     writeLines(['Full description'], 10, [23, 32, 28], 14);
