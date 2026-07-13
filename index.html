@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Live CWE intelligence dashboard." />
+    <title>CWE Watch — Intelligence Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html">CWE<span>WATCH</span></a>
+      <nav aria-label="Dashboard navigation"><a href="#overview">Overview</a><a href="#weaknesses">Watchlist</a><a href="#lookup">Lookup</a></nav>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false"><span aria-hidden="true">◐</span><span class="theme-label">Dark</span></button>
+    </header>
+
+    <main class="dashboard-shell">
+      <section class="intro" id="overview">
+        <div><p class="eyebrow"><span class="live-dot"></span> Live MITRE data</p><h1>CWE intelligence,<br /><em>in focus.</em></h1></div>
+        <p class="intro-copy">Track the current Common Weakness Enumeration catalog and inspect individual software weakness records.</p>
+      </section>
+
+      <section class="metrics-grid" aria-label="CWE catalog overview">
+        <article class="metric-card highlight"><p>Catalog version</p><strong id="content-version">Loading…</strong><span id="content-date">Fetching current release</span></article>
+        <article class="metric-card"><p>Total weaknesses</p><strong id="weakness-count">—</strong><span>Defined software weaknesses</span></article>
+        <article class="metric-card"><p>Categories</p><strong id="category-count">—</strong><span>Organized CWE groupings</span></article>
+        <article class="metric-card"><p>Views</p><strong id="view-count">—</strong><span>Catalog perspectives</span></article>
+      </section>
+
+      <section class="section-head" id="weaknesses"><div><p class="eyebrow">Top five · CISA KEV + EPSS</p><h2>Watchlist</h2></div><div class="section-actions"><button class="text-button" id="download-report" type="button" disabled>Download PDF ↓</button><button class="text-button" id="refresh-data" type="button">Refresh data ↻</button></div></section>
+      <section class="weakness-grid" id="weakness-grid" aria-live="polite">
+        <p class="loading">Loading live CWE records…</p>
+      </section>
+
+      <section class="lookup-panel" id="lookup">
+        <div><p class="eyebrow">CWE record lookup</p><h2>Inspect a<br /><em>weakness.</em></h2></div>
+        <div class="lookup-content"><form id="lookup-form"><label for="cwe-id">CWE identifier</label><div class="input-row"><input id="cwe-id" name="cwe-id" inputmode="numeric" pattern="[0-9]+" placeholder="e.g. 79" required /><button type="submit">Search <span>↗</span></button></div></form><p class="form-hint">Enter the numeric part of a CWE ID. For example: <button class="example-id" type="button" data-id="89">89</button>, <button class="example-id" type="button" data-id="787">787</button>.</p></div>
+      </section>
+      <section class="record-result" id="record-result" aria-live="polite" hidden></section>
+    </main>
+    <footer><span>CWE Watch</span><span>Data: MITRE CWE REST API</span><a href="https://github.com/CWE-CAPEC/REST-API-wg/blob/main/openapi.json" target="_blank" rel="noreferrer">API documentation ↗</a></footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" referrerpolicy="no-referrer"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
