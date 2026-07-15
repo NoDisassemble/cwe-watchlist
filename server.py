@@ -5,6 +5,7 @@ Then open: http://localhost:8000
 """
 
 import json
+import os
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -175,6 +176,7 @@ def get_threat_watchlist():
 
 
 if __name__ == "__main__":
-    server = ThreadingHTTPServer(("", 8000), DashboardHandler)
-    print("CWE Watch is available at http://localhost:8000")
+    port = int(os.environ.get("PORT", "8000"))
+    server = ThreadingHTTPServer(("0.0.0.0", port), DashboardHandler)
+    print(f"CWE Watch is available on port {port}")
     server.serve_forever()
