@@ -283,6 +283,8 @@ h2 em {
 }
 
 .weakness-grid {
+    width: 100%;
+    min-width: 0;
     display: grid;
     grid-template-columns: 1fr;
     border-top: 1px solid var(--line);
@@ -290,6 +292,7 @@ h2 em {
 }
 
 .weakness-card {
+    min-width: 0;
     min-height: 220px;
     padding: 1.25rem;
     display: flex;
@@ -511,7 +514,7 @@ h2 em {
     color: var(--danger);
 }
 
-footer {
+body > footer {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
@@ -523,7 +526,7 @@ footer {
     text-transform: uppercase;
 }
 
-footer a:hover {
+body > footer a:hover {
     color: var(--ink);
 }
 
@@ -587,7 +590,7 @@ footer a:hover {
         min-height: 220px;
     }
 
-    footer {
+    body > footer {
         display: block;
         margin-top: 3rem;
         line-height: 2;
