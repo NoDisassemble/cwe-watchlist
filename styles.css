@@ -230,11 +230,40 @@ h2 em {
     color: color-mix(in srgb, var(--accent-ink) 65%, transparent);
 }
 
+.methodology {
+    margin: 7rem 0 2rem;
+    min-height: 180px;
+    gap: .65rem;
+    justify-content: center;
+    border: 1px solid var(--line);
+}
+
+.methodology .eyebrow {
+    margin: 0;
+}
+
+.methodology h3 {
+    margin: 0;
+    font: 600 1.45rem/1.05 "Space Grotesk", sans-serif;
+    letter-spacing: -.04em;
+}
+
+.methodology-copy {
+    margin: 0;
+    color: var(--muted);
+    font-size: .9rem;
+    line-height: 1.6;
+}
+
+.methodology + .section-head {
+    margin-top: 0;
+}
+
 .section-head {
     display: flex;
     justify-content: space-between;
     align-items: end;
-    margin-top: 7rem;
+    margin-top: 5rem;
     margin-bottom: 1.6rem;
 }
 
@@ -513,6 +542,10 @@ footer a:hover {
 
     .metrics-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .methodology {
+        margin-top: 4rem;
     }
 
     .section-head,
