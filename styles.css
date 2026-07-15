@@ -128,7 +128,7 @@ nav a:hover,
 
 .intro {
     min-height: 310px;
-    padding: clamp(4.5rem, 10vw, 8rem) 0 4rem;
+    padding: 6rem 0 4rem;
     display: flex;
     justify-content: space-between;
     gap: 3rem;
@@ -189,6 +189,7 @@ h2 em {
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 3rem;
     border: 1px solid var(--line);
     border-right: 0;
 }
@@ -231,7 +232,7 @@ h2 em {
 }
 
 .methodology {
-    margin: 7rem 0 2rem;
+    margin: 3rem 0 2rem;
     min-height: 180px;
     gap: .65rem;
     justify-content: center;
@@ -514,6 +515,7 @@ footer {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+    margin-top: 3rem;
     padding: 1.5rem max(1.5rem, calc((100vw - 1440px)/2 + 1.5rem));
     border-top: 1px solid var(--line);
     color: var(--muted);
@@ -533,7 +535,7 @@ footer a:hover {
     .intro {
         min-height: 0;
         display: block;
-        padding: 4rem 0;
+        padding: 6rem 0 4rem;
     }
 
     .intro-copy {
@@ -542,10 +544,6 @@ footer a:hover {
 
     .metrics-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    .methodology {
-        margin-top: 4rem;
     }
 
     .section-head,
@@ -591,6 +589,11 @@ footer a:hover {
 
     footer {
         display: block;
+        margin-top: 3rem;
         line-height: 2;
+    }
+
+    body > footer > * {
+        display: block;
     }
 }
